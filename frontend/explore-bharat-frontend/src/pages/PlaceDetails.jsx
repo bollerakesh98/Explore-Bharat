@@ -1,34 +1,27 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { destinations, hiddenGems } from "../data";
 
 function PlaceDetails() {
   const { id } = useParams();
-  const [place, setPlace] = useState(null);
+  const allPlaces = [...destinations, ...hiddenGems]; // merge arrays
+  const place = allPlaces.find(p => p.id === parseInt(id));
 
-  useEffect(() => {
-    fetch(`http://localhost:8080/api/destinations`)
-      .then(res => res.json())
-      .then(data => {
-        const found = data.find(d => d.id === parseInt(id));
-        setPlace(found);
-      })
-      .catch(err => console.error(err));
-  }, [id]);
-
-  if (!place) return <p className="p-10">Loading...</p>;
+  if(!place) return <p style={{ textAlign:'center', marginTop:'2rem' }}>Place not found.</p>;
 
   return (
-    <div className="max-w-3xl mx-auto p-10">
-  <img src={place.image || `https://source.unsplash.com/800x400/?${place.name},india`} className="w-full h-64 object-cover rounded-lg mb-6" />
-  <h1 className="text-4xl font-bold mb-4">{place.name}, {place.state}</h1>
-  <p className="mb-4 text-gray-700">{place.description}</p>
-  <div className="grid grid-cols-2 gap-4 text-gray-600">
-    <span><b>Interest:</b> {place.interest}</span>
-    <span><b>Budget:</b> ₹{place.budget}/day</span>
-    <span><b>Days:</b> {place.days}</span>
-    <span><b>Best Time:</b> {place.best_time}</span>
-  </div>
-</div>
+    <div style={{ padding:'2rem', minHeight:'100vh', background:'#f0f4f8' }}>
+      <Link to="/" style={{ display:'inline-block', marginBottom:'1rem', color:'#2196f3' }}>← Back</Link>
+      <div style={{ display:'flex', flexWrap:'wrap', gap:'2rem', alignItems:'flex-start' }}>
+        <img src={place.img} alt={place.name} style={{ flex:'1 1 400px', borderRadius:'1rem', objectFit:'cover', maxHeight:'500px' }}/>
+        <div style={{ flex:'1 1 400px' }}>
+          <h1 style={{ fontSize:'2.5rem', marginBottom:'1rem' }}>{place.name}, {place.state}</h1>
+          <p style={{ fontSize:'1.2rem', marginBottom:'1rem' }}>{place.desc}</p>
+          <p style={{ marginBottom:'0.5rem' }}><strong>Budget:</strong> ₹{place.budget}/day</p>
+          <p style={{ marginBottom:'0.5rem' }}><strong>Days:</strong> {place.days}</p>
+          <span className="badge">{place.interest}</span>
+        </div>
+      </div>
+    </div>
   );
 }
 
