@@ -1,59 +1,70 @@
-import { destinations } from "../data"; // import centralized data
+import { destinations } from "../data";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-function Explore() {
+export default function Explore() {
   const [search, setSearch] = useState("");
-  const [filterInterest, setFilterInterest] = useState("All");
-  const [filterBudget, setFilterBudget] = useState("All");
 
-  const filteredDestinations = destinations.filter(d => {
-    const matchesSearch = d.name.toLowerCase().includes(search.toLowerCase()) || d.state.toLowerCase().includes(search.toLowerCase());
-    const matchesInterest = filterInterest === "All" || d.interest === filterInterest;
-    const matchesBudget = filterBudget === "All" || (filterBudget === "<2500" && d.budget < 2500) || (filterBudget === "2500-3500" && d.budget >= 2500 && d.budget <= 3500) || (filterBudget === ">3500" && d.budget > 3500);
-    return matchesSearch && matchesInterest && matchesBudget;
-  });
+  const filteredPlaces = destinations.filter(place =>
+    place.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
-    <div style={{ padding:'2rem' }}>
-      <h1 style={{ textAlign:'center', marginBottom:'1.5rem' }}>Explore Destinations</h1>
+    <>
+      <div className="header">Explore Near You 🌍</div>
 
-      <div style={{ display:'flex', justifyContent:'center', gap:'1rem', marginBottom:'2rem', flexWrap:'wrap' }}>
-        <input type="text" placeholder="Search by name or state" value={search} onChange={e => setSearch(e.target.value)} />
-        <select value={filterInterest} onChange={e => setFilterInterest(e.target.value)}>
-          <option>All</option>
-          <option>Beach</option>
-          <option>Adventure</option>
-          <option>Culture</option>
-        </select>
-        <select value={filterBudget} onChange={e => setFilterBudget(e.target.value)}>
-          <option value="All">All Budgets</option>
-          <option value="<2500">Below ₹2500/day</option>
-          <option value="2500-3500">₹2500-₹3500/day</option>
-          <option value=">3500">Above ₹3500/day</option>
-        </select>
-      </div>
+      <div className="page">
 
-      <div className="card-grid">
-        {filteredDestinations.length === 0 ? (
-          <p style={{ textAlign:'center', width:'100%' }}>No destinations found.</p>
-        ) : (
-          filteredDestinations.map(d => (
-            <div key={d.id} className="card">
-              <img src={d.img} alt={d.name}/>
-              <div className="card-content">
-                <h2>{d.name}, {d.state}</h2>
-                <p>{d.desc}</p>
-                <p>Budget: ₹{d.budget}/day | {d.days} days</p>
-                <span className="badge">{d.interest}</span>
-                <Link to={`/place/${d.id}`}>View Details →</Link>
+        {/* Map */}
+        <div className="card map-card">
+          <h3>Map View</h3>
+          <p>Discover places near your location</p>
+        </div>
+
+        {/* Search */}
+        <div className="search-box">
+          <input
+            type="text"
+            placeholder="Search places, hills, beaches..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+
+        {/* Filters */}
+        <div className="card">
+          <h3>Filters</h3>
+          <div className="filter-tags">
+            <span className="tag">Budget</span>
+            <span className="tag">Nature</span>
+            <span className="tag">Culture</span>
+            <span className="tag">Food</span>
+          </div>
+        </div>
+
+        {/* Places */}
+        {filteredPlaces.length > 0 ? (
+          filteredPlaces.map(place => (
+            <Link to={`/place/${place.id}`} key={place.id}>
+              <div className="card place-card">
+                <img src={place.image} alt={place.name} />
+                <h3>{place.name}</h3>
+                <p>{place.category} • ₹{place.budget}</p>
               </div>
-            </div>
+            </Link>
           ))
+        ) : (
+          <div className="card">
+            <p>No places found 😕</p>
+          </div>
         )}
       </div>
-    </div>
+
+      <div className="bottom-nav">
+        <span>Home</span>
+        <span className="active">Explore</span>
+        <span>Plan</span>
+      </div>
+    </>
   );
 }
-
-export default Explore;

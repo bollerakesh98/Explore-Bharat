@@ -1,30 +1,19 @@
 package main
 
 import (
-	"net/http"
-
 	"explore-bharat-backend/db"
-	"explore-bharat-backend/handlers"
+	router "explore-bharat-backend/routers"
+	"log"
 
-	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	db.Connect()
+	godotenv.Load()
+	db.Init()
+	// data.SeedHiddenGems()
 
-	r := gin.Default()
-
-	r.Use(cors.Default())
-
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "Explore Bharat backend + DB running 🚀",
-		})
-	})
-	r.GET("/seed", handlers.SeedDestinations)
-	r.GET("/api/destinations", handlers.GetDestinations)
-	r.GET("/api/hidden-gems", handlers.GetHiddenGems)
-
+	r := router.Setup()
+	log.Println("Server running on :8080")
 	r.Run(":8080")
 }

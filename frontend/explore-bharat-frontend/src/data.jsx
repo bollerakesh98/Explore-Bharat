@@ -1,5 +1,5 @@
 export const destinations = [
-  { id:1, name:'Goa', state:'Goa', desc:'Beaches & nightlife', budget:3000, days:3, interest:'Beach', img:'https://voiceofadventure.com/wp-content/uploads/2022/06/60d0813807aff-Baga_Beach_In_Goa.jpg' },
+      { id:1, name:'Goa', state:'Goa', desc:'Beaches & nightlife', budget:3000, days:3, interest:'Beach', img:'https://voiceofadventure.com/wp-content/uploads/2022/06/60d0813807aff-Baga_Beach_In_Goa.jpg' },
       { id:2, name:'Rishikesh', state:'Uttarakhand', desc:'River rafting & spirituality', budget:2000, days:2, interest:'Adventure', img:'https://miro.medium.com/v2/resize:fit:675/1*z9Rqk7XS8zX06hwi8XyGNw.jpeg' },
       { id:3, name:'Jaipur', state:'Rajasthan', desc:'Palaces & culture', budget:2500, days:2, interest:'Culture', img:'https://fthmb.tqn.com/cHkm_dCPiPqETGHqv-rTddx6D_E=/960x0/filters:no_upscale()/facade-of-the-hawa-mahal-palace-of-winds-in-jaipur-rajasthan-india-636950806-58e24eed5f9b58ef7e556bbb.jpg' },
       { id:4, name:'Spiti Valley', state:'Himachal Pradesh', desc:'Desert mountains & monasteries', budget:4000, days:5, interest:'Adventure', img:'https://deih43ym53wif.cloudfront.net/tibetan-key-monastery-spiti-india-Himachal-Pradesh-shutterstock_1604585710.jpg_976fb5c311.jpg' },
